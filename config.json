@@ -1,0 +1,66 @@
+{
+	"name" :"Clear Discontinued Participant Identifier Information (PII)",
+	"namespace" : "Nottingham\\ClearDiscPII",
+	"description" : "Clear Discontinued Participant Identifier Information.",
+	"authors": [
+		{
+			"name": "Nina Clayton",
+			"email": "nina.clayton@nottingham.ac.uk",
+			"institution": "University of Nottingham"
+		}
+	],
+	"permissions" : [
+		"redcap_save_record"
+        ],
+	"framework-version" : 6,
+	"compatibility" : { "redcap-version-min" : "10.4.1" },
+	"links" : {
+		"project" : [
+			{ "name" : "Clear Discontinued PIIs", "icon" : "far fa-trash-alt", "url" : "clearpii.php" }
+		]
+	},
+	
+	"project-settings" : [
+            {
+                "key" : "clear-disc-pii-user-roles",
+                "name" : "Roles with access to clear discontinued PII manually<br>(enter 1 role name per line or * for all roles)",
+                "type" : "textarea"
+            },
+            {
+                "key" : "pi-vars",
+                "name" : "Participnat Identifier variable to blank",
+                "type" : "sub_settings",
+                "repeatable" : true,
+                "sub_settings" : [
+                        {
+                                "key" : "pi-event",
+                                "name" : "Event",
+                                "type" : "event-list",
+                                "required":true
+                        },
+                        {
+                                "key" : "pi-field",
+                                "name" : "Field",
+                                "type" : "field-list",
+                                "required":true
+                        }
+                ]
+            },
+            {
+                "key" : "clear-disc-pii-logic",
+                "name" : "Clear discontinued PII automatically on following logic",
+                "type" : "textarea"
+            }
+               
+		
+	],
+        "crons": [
+        {
+           "cron_name": "cleardiscpiiviacron",
+           "cron_description": "Cron that clears record fields on defined logic - cron is called every 4 hours",
+           "method": "clearDiscPIIViaCron",
+           "cron_frequency": "60",
+           "cron_max_run_time": "1800"
+        }
+        ]
+}
