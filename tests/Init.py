@@ -19,7 +19,7 @@ class Test1Login():
     self.driver.quit()
   
   def test_1Login(self):
-    self.driver.get("https://redcap03.nottingham.ac.uk/index.php?action=myprojects&logout=1")
+    self.driver.get("http://127.0.0.1")
     self.driver.set_window_size(974, 528)
     self.driver.find_element(By.ID, "username").send_keys("admin")
     self.driver.find_element(By.ID, "password").send_keys("abc123")
