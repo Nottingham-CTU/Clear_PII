@@ -28,7 +28,7 @@
             },
             {
                 "key" : "pi-vars",
-                "name" : "Participnat Identifier variable to blank",
+                "name" : "Participant Identifier variable to blank",
                 "type" : "sub_settings",
                 "repeatable" : true,
                 "sub_settings" : [
