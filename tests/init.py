@@ -38,7 +38,6 @@ class Test1Login():
     actions.move_to_element(element).perform()
     element = self.driver.find_element(By.CSS_SELECTOR, "body")
     actions = ActionChains(self.driver)
-    actions.move_to_element(element, 0, 0).perform()
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "tr[data-module=\"clear_disc_pii\"] .enable-button")))
     self.driver.find_element(By.CSS_SELECTOR, "tr[data-module=\"clear_disc_pii\"] .enable-button").click()
     time.sleep(5)
