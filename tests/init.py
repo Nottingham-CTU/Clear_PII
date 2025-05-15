@@ -20,7 +20,7 @@ class Test1Login():
   
   def test_1Login(self):
     self.driver.get("http://127.0.0.1")
-    self.driver.set_window_size(974, 528)
+    self.driver.set_window_size(1078, 582)
     self.driver.find_element(By.LINK_TEXT, "New Project").click()
     time.sleep(1)
     self.driver.find_element(By.ID, "app_title").send_keys("Clear PII Test")
@@ -31,7 +31,6 @@ class Test1Login():
     self.driver.find_element(By.NAME, "odm").send_keys("REPODIR/tests/ClearPIITest_REDCap.xml")
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc").click()
-    self.driver.set_window_size(1078, 582)
     self.driver.find_element(By.LINK_TEXT, "Manage").click()
     time.sleep(1)
     self.driver.find_element(By.ID, "external-modules-enable-modules-button").click()
