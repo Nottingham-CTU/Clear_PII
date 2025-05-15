@@ -99,7 +99,7 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
     }
     
     public function alert($msg) {
-        echo "<script type='text/javascript'>alert('$msg');</script>";
+        echo "<script type='text/javascript'>alert('".htmlspecialchars($msg, ENT_QUOTES )."');</script>";
     }
 
     // run logic, if configured & triggered by save to clear .

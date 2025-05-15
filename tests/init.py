@@ -28,7 +28,6 @@ class Test1Login():
     dropdown = self.driver.find_element(By.ID, "purpose")
     dropdown.find_element(By.XPATH, "//option[. = 'Operational Support']").click()
     self.driver.find_element(By.ID, "project_template_radio2").click()
-    self.driver.find_element(By.NAME, "odm").click()
     self.driver.find_element(By.NAME, "odm").send_keys("REPODIR/tests/ClearPIITest_REDCap.xml")
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc").click()

@@ -50,7 +50,7 @@ if (!empty($_POST) && isset($_POST['action'])) {
     }
     // clear pii fields for record that has data that needs to cleared
     else if ($_POST['action'] == 'clear_record') {
-        $record = $_POST['record_id'];
+        $record = htmlspecialchars($_POST['record_id'], ENT_QUOTES );
         $fieldsSelected = explode(",", $_POST['selected_fields']);
         if($module->clearPII($project_id, $record, 'on manual selection.', $fieldsSelected))
         {
