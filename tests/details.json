@@ -1,18 +1,18 @@
 [
 	{
-		"file" : "5.ClearPII_Logic_Test_on_Save.py",
+		"file" : "test_01_ClearPII_Logic_Test_on_Save.py",
 		"name" : "Clear PII passing logic on saving form",
 		"expected" : "Clear data on Save",
 		"scenario" : "Save data on form that passes logic, on saving the form the fields secified in module confiugration are cleared"
 	},
 	{
-		"file" : "6.ClearPII_Manually.py",
+		"file" : "test_02_ClearPII_Manually.py",
 		"name" : "Clear PII manually",
 		"expected" : "Clear PII manually successfully",
 		"scenario" : "Navigate to Clear Discontinued PIIs menu item, and clear checked fields with data"
 	},
 	{
-		"file" : "7.Manual_Clear_PII_User_Access.py",
+		"file" : "test_03_Manual_Clear_PII_User_Access.py",
 		"name" : "Clear Discontinued PIIs access",
 		"expected" : "Clear Discontinued PIIs menu item avialable for specified users only",
 		"scenario" : "change user role, Clear Discontinued PIIs menu item only available for users with access"
