@@ -20,7 +20,7 @@ if (!empty($_POST) && isset($_POST['action'])) {
     if ($_POST['action'] == 'select_record') {
 
         $continue=true;
-        $record = $_POST['record_id'];
+        $record = htmlspecialchars($_POST['record_id'], ENT_QUOTES );
         $fieldsSelected = explode(",", $_POST['selected_fields']);
         
         $data = REDCap::getData( 'array', $record);
@@ -148,9 +148,9 @@ for ( $i = 0; $i < count($piiEvents); $i++ )
  </table><br>
  <p>Enter a participant that has disconitued/withdrawn should be selected to remove participant identifier information.</p>
  <p>
-  Record Id:&nbsp;&nbsp; <input type="text" <?php if($continue) echo "disabled"; ?> value="<?php echo $record?>" id="clear-record" name="clearrecord"> <br><br>  
+  Record Id:&nbsp;&nbsp; <input type="text" <?php if($continue) echo "disabled"; ?> value="<?php echo htmlspecialchars($record, ENT_QUOTES );?>" id="clear-record" name="clearrecord"> <br><br>  
   <input type="hidden" name="csrf_token" value="<?php echo System::getCsrfToken(); ?>">
-  <input type='hidden' id='record_id' name='record_id' value='<?php echo $record?>'>
+  <input type='hidden' id='record_id' name='record_id' value='<?php echo htmlspecialchars($record, ENT_QUOTES );?>'>
   <button id="review-record-button" class="jqbuttonmed ui-button ui-corner-all ui-widget"
           onclick="reviewRecordFields(this.form.clearrecord.value);return false" style="<?php if($continue) echo "display:none"; ?>">
    <span style="vertical-align:middle;color:#A00000"><i class="fas fa-trash-alt"></i> Clear Record</span>
@@ -160,7 +160,7 @@ for ( $i = 0; $i < count($piiEvents); $i++ )
   {
 ?>
   <div id="pii-fields-cleared">
-  <p>List of values from selected fields with participant identifier information that with be cleared for record, <b><?php echo $record?></b>.</p>
+  <p>List of values from selected fields with participant identifier information that with be cleared for record, <b><?php echo htmlspecialchars($record, ENT_QUOTES );?></b>.</p>
   <table class="dataTable cell-border no-footer">
   <thead style="position:sticky;top:0px">
    <tr>
