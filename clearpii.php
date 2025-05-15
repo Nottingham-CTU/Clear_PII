@@ -1,4 +1,6 @@
 <?php
+
+namespace Nottingham\ClearDiscPII;
 /**
  * 	Clear participant record fields manually.
  */
