@@ -20,7 +20,6 @@ class Test1Login():
   
   def test_1Login(self):
     self.driver.get("http://127.0.0.1")
-    self.driver.set_window_size(1078, 582)
     self.driver.find_element(By.LINK_TEXT, "New Project").click()
     time.sleep(1)
     self.driver.find_element(By.ID, "app_title").send_keys("Clear PII Test")
