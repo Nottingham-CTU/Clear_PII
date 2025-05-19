@@ -103,7 +103,7 @@ class Test1Login():
     dropdown.find_element(By.XPATH, "//option[. = 'oth_pi_id - Extra PII Identifier']").click()
     self.driver.find_element(By.NAME, "clear-disc-pii-logic").click()
     self.driver.find_element(By.NAME, "clear-disc-pii-logic").send_keys(" round(datediff([screening_arm_1][eoi_date], \"today\", \"d\",\"dmy\", true)) >= 1 AND [baseline_arm_1][oth_pi_yes_no] <> 1")
-        self.driver.find_element(By.NAME, "pi-event____6").click()
+    self.driver.find_element(By.NAME, "pi-event____6").click()
     dropdown = self.driver.find_element(By.NAME, "pi-event____6")
     dropdown.find_element(By.XPATH, "//option[. = 'Arm: Arm 1 - Event: 3 Month']").click()
     self.driver.find_element(By.NAME, "pi-field____6").click()
