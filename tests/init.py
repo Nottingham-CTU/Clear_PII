@@ -105,7 +105,7 @@ class Test1Login():
     self.driver.find_element(By.NAME, "clear-disc-pii-logic").send_keys(" round(datediff([screening_arm_1][eoi_date], \"today\", \"d\",\"dmy\", true)) >= 1 AND [baseline_arm_1][oth_pi_yes_no] <> 1")
     self.driver.find_element(By.CSS_SELECTOR, ".modal-lg .save").click()
     time.sleep(5)
-    elements = self.driver.find_elements(By.XPATH, "//a[contains(text(),'User Rights')]")
+    self.driver.find_element(By.LINK_TEXT, "User Rights").click()
     time.sleep(1)
     self.driver.find_element(By.LINK_TEXT, "admin (REDCap Admin)").click()
     time.sleep(1)
