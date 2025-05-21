@@ -138,8 +138,6 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_date").send_keys("07-04-2025")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     time.sleep(3)
-    self.driver.find_element(By.CSS_SELECTOR, "#rsd-men-link > span").click()
-    time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-rcgreen:nth-child(1)").click()
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, ".nowrap:nth-child(2) > a > img").click()
