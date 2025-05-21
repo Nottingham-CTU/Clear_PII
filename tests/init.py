@@ -138,6 +138,8 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_date").send_keys("07-04-2025")
     self.driver.find_element(By.NAME, "eoi_complete").click()
     dropdown = self.driver.find_element(By.NAME, "eoi_complete")
+    time.sleep(1)
+    print("ECHOSCREENSHOT")
     dropdown.find_element(By.XPATH, "//option[. = 'Complete']").click()
     self.driver.find_element(By.CSS_SELECTOR, "#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord > span").click()
     self.driver.find_element(By.CSS_SELECTOR, ".ui-button-icon").click()
