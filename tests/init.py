@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class Test1Login():
+class TestInit():
   def setup_method(self, method):
     self.driver = webdriver.Chrome()
     self.vars = {}
@@ -18,7 +18,7 @@ class Test1Login():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_1Login(self):
+  def test_init(self):
     self.driver.get("http://127.0.0.1")
     self.driver.find_element(By.LINK_TEXT, "New Project").click()
     time.sleep(1)
@@ -41,43 +41,35 @@ class Test1Login():
     self.driver.find_element(By.NAME, "clear-disc-pii-user-roles").click()
     self.driver.find_element(By.NAME, "clear-disc-pii-user-roles").click()
     self.driver.find_element(By.NAME, "clear-disc-pii-user-roles").send_keys("Administrator\nData Management")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____0\"] option\').eq(1).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____0\"]\').val(\'eoi_email\')")
     self.driver.find_element(By.CSS_SELECTOR, ".external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".external-modules-add-instance")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____1\"] option\').eq(1).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____1\"]\').val(\'eoi_name\')")
     self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(7) .external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(7) .external-modules-add-instance")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____2\"] option\').eq(1).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____2\"]\').val(\'eoi_mobile\')")
     self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(11) .external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(11) .external-modules-add-instance")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____3\"] option\').eq(2).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____3\"]\').val(\'cd_name\')")
     self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(15) .external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(15) .external-modules-add-instance")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____4\"] option\').eq(2).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____4\"]\').val(\'cd_email\')")
     self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(19) .external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(19) .external-modules-add-instance")
     element = self.driver.find_element(By.CSS_SELECTOR, "body")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____5\"] option\').eq(2).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____5\"]\').val(\'cd_mobile\')")
     self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(23) .external-modules-add-instance").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".sub_start:nth-child(23) .external-modules-add-instance")
-    time.sleep(5)
     self.driver.execute_script("$(\'[name=\"pi-event____6\"] option\').eq(3).prop(\'selected\',true);")
     self.driver.execute_script("$(\'[name=\"pi-field____6\"]\').val(\'oth_pi_id\')")
     self.driver.find_element(By.NAME, "clear-disc-pii-logic").click()
     self.driver.find_element(By.NAME, "clear-disc-pii-logic").send_keys(" round(datediff([screening_arm_1][eoi_date], \"today\", \"d\",\"dmy\", true)) >= 1 AND [baseline_arm_1][oth_pi_yes_no] <> 1")
-    print("ECHOSCREENSHOT")
     self.driver.find_element(By.CSS_SELECTOR, ".modal-lg .save").click()
     time.sleep(5)
     self.driver.find_element(By.LINK_TEXT, "User Rights").click()
@@ -139,10 +131,8 @@ class Test1Login():
     self.driver.find_element(By.CSS_SELECTOR, "#SurveyActionDropDown > span").click()
     self.vars["window_handles"] = self.driver.window_handles
     self.driver.find_element(By.CSS_SELECTOR, ".ui-menu-item:nth-child(1) > #surveyoption-openSurvey > span").click()
-    self.vars["win5809"] = self.wait_for_window(2000)
-    self.vars["root"] = self.driver.current_window_handle
-    self.driver.switch_to.window(self.vars["win5809"])
-    time.sleep(1)
+    time.sleep(5)
+    print("ECHOSCREENSHOT")
     self.driver.find_element(By.NAME, "eoi_name").click()
     self.driver.find_element(By.NAME, "eoi_name").send_keys("Test")
     self.driver.find_element(By.NAME, "eoi_email").click()
