@@ -135,6 +135,7 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_mobile").click()
     self.driver.find_element(By.NAME, "eoi_mobile").send_keys("07888888888")
     self.driver.find_element(By.NAME, "eoi_date").click()
+    self.driver.find_element(By.NAME, "eoi_date").send_keys("")
     self.driver.find_element(By.NAME, "eoi_date").send_keys("07-04-2025")
     self.driver.find_element(By.NAME, "eoi_complete").click()
     dropdown = self.driver.find_element(By.NAME, "eoi_complete")
