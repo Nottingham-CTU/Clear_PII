@@ -53,6 +53,7 @@ class Test01ClearPIILogicTestonSave():
     self.driver.find_element(By.NAME, "eoi_mobile").click()
     self.driver.find_element(By.NAME, "eoi_mobile").send_keys("07888888888")
     self.driver.find_element(By.NAME, "eoi_date").click()
+    self.driver.execute_script("$(\'[name=\"eoi_date\"]\').val(\'\')")
     self.driver.find_element(By.NAME, "eoi_date").send_keys("08-04-2025")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
