@@ -163,6 +163,4 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_mobile").send_keys("07888888888")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
-    self.driver.execute_script("window.history.go(-1)")
     time.sleep(4)
-    self.driver.close()
