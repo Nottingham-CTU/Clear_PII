@@ -57,7 +57,11 @@ class Test01ClearPIILogicTestonSave():
     self.driver.find_element(By.NAME, "eoi_date").send_keys("08-04-2025")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
-    self.driver.execute_script("window.location.href=\'http://127.0.0.1/\'")
+    WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "footer")))
+    elements = self.driver.find_elements(By.CSS_SELECTOR, "a[onclick*=\"autoFill()\"]")
+    assert len(elements) == 0
+    self.driver.execute_script("$(\'#footer\').remove();window.history.back()")
+    WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "footer")))
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
     assert len(elements) > 0

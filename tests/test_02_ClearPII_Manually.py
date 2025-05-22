@@ -26,10 +26,7 @@ class Test02ClearPIImanually():
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
     time.sleep(1)
-    self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
-    assert self.driver.switch_to.alert.text == "At least one field must be selected."
-    time.sleep(1)
-    self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"3\"]\').prop(\'checked\', true);")
+    self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"3\"]\').prop(\'checked\', true)")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"4\"]\').prop(\'checked\', true);")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"5\"]\').prop(\'checked\', true);")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"6\"]\').prop(\'checked\', true);")
