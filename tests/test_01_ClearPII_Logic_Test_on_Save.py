@@ -56,7 +56,6 @@ class Test01ClearPIILogicTestonSave():
     self.driver.execute_script("$(\'[name=\"eoi_date\"]\').val(\'\')")
     self.driver.find_element(By.NAME, "eoi_date").send_keys("08-04-2025")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "footer")))
     elements = self.driver.find_elements(By.CSS_SELECTOR, "a[onclick*=\"autoFill()\"]")
     assert len(elements) == 0
