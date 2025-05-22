@@ -58,6 +58,6 @@ class Test03ManualClearPIIUseraccess():
     dropdown.find_element(By.XPATH, "//option[. = 'Administrator']").click()
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     time.sleep(1)
-    self.driver.execute_script("window.history.go(0)")
+    self.driver.execute_script("window.history.back()")
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
   
