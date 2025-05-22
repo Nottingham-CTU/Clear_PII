@@ -45,7 +45,6 @@ class Test02ClearPIImanually():
     self.driver.find_element(By.CSS_SELECTOR, "#clear-record-button > span").click()
     time.sleep(1)
     self.driver.switch_to.alert.accept()
-    self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     time.sleep(1)
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"3\"]\').prop(\'checked\', true);")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"4\"]\').prop(\'checked\', true);")
