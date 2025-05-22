@@ -33,6 +33,7 @@ class Test01ClearPIILogicTestonSave():
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
     self.driver.find_element(By.CSS_SELECTOR, "#rsd-men-link > span").click()
     time.sleep(3)
+    print("ECHOSCREENSHOT")
     self.driver.find_element(By.CSS_SELECTOR, ".btn-rcgreen:nth-child(1)").click()
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".nowrap:nth-child(2) > a > img").click()
