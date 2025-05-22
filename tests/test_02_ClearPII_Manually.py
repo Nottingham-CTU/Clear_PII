@@ -28,12 +28,14 @@ class Test02ClearPIImanually():
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     assert self.driver.switch_to.alert.text == "At least one field must be selected."
+    time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(4) input").click()
     self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(5) input").click()
     self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(6) input").click()
     self.driver.find_element(By.CSS_SELECTOR, "tr:nth-child(7) input").click()
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     assert self.driver.switch_to.alert.text == "A record id must be entered."
+    time.sleep(1)
     self.driver.find_element(By.ID, "clear-record").send_keys("1")
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     self.driver.find_element(By.ID, "cancel-clear").click()
