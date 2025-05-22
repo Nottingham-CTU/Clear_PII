@@ -49,7 +49,7 @@ class Test03ManualClearPIIUseraccess():
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
     time.sleep(1)
-    self.driver.execute_script("window.history.go(-1)")
+    self.driver.execute_script("window.history.back()")
     self.driver.find_element(By.LINK_TEXT, "User Rights").click()
     self.driver.find_element(By.LINK_TEXT, "admin (REDCap Admin)").click()
     self.driver.find_element(By.ID, "assignUserBtn3").click()
@@ -58,6 +58,6 @@ class Test03ManualClearPIIUseraccess():
     dropdown.find_element(By.XPATH, "//option[. = 'Administrator']").click()
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     time.sleep(1)
-    self.driver.execute_script("window.history.back()")
+    self.driver.execute_script("location.reload()")
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
   
