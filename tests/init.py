@@ -155,7 +155,6 @@ class TestInit():
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".ui-dialog-buttonset > .ui-button:nth-child(2)").click()
     time.sleep(3)
-    self.driver.execute_script("sessionStorage.setItem(\'test-surveylink\',$(\'[name=\"eoi_url\"]\').val())")
     self.driver.find_element(By.NAME, "eoi_name").click()
     self.driver.find_element(By.NAME, "eoi_name").send_keys("Test")
     self.driver.find_element(By.NAME, "eoi_email").click()
