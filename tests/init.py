@@ -154,7 +154,7 @@ class TestInit():
     self.driver.find_element(By.CSS_SELECTOR, "#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord > span").click()
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".ui-dialog-buttonset > .ui-button:nth-child(2)").click()
-    self.driver.execute_script("$(\'[name=\"eoi_name\"]\').val($(\'[name=\"eoi_url\"]\').val())")
+    self.driver.execute_script("sessionStorage.setItem(\'test-surveylink\',$(\'[name=\"eoi_url\"]\').val())")
     time.sleep(3)
     self.driver.find_element(By.NAME, "eoi_name").click()
     self.driver.find_element(By.NAME, "eoi_name").send_keys("Test")
