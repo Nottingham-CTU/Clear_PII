@@ -155,6 +155,7 @@ class TestInit():
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".ui-dialog-buttonset > .ui-button:nth-child(2)").click()
     time.sleep(3)
+    self.driver.execute_script("window.location.href=$(\'[name=\"eoi_url\"]\').val()")
     self.driver.find_element(By.NAME, "eoi_name").click()
     self.driver.find_element(By.NAME, "eoi_name").send_keys("Test")
     self.driver.find_element(By.NAME, "eoi_email").click()
@@ -163,4 +164,4 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_mobile").send_keys("07888888888")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
-    time.sleep(4)
+

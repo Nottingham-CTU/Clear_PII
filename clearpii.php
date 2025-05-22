@@ -151,7 +151,7 @@ for ( $i = 0; $i < count($piiEvents); $i++ )
  <p>Enter a participant that has disconitued/withdrawn should be selected to remove participant identifier information.</p>
  <p>
   Record Id:&nbsp;&nbsp; <input type="text" <?php if($continue) echo "disabled"; ?> value="<?php echo htmlspecialchars($record, ENT_QUOTES );?>" id="clear-record" name="clearrecord"> <br><br>  
-  <input type="hidden" name="csrf_token" value="<?php echo System::getCsrfToken(); ?>">
+  <input type="hidden" name="csrf_token" value="<?php echo \System::getCsrfToken(); ?>">
   <input type='hidden' id='record_id' name='record_id' value='<?php echo htmlspecialchars($record, ENT_QUOTES );?>'>
   <button id="review-record-button" class="jqbuttonmed ui-button ui-corner-all ui-widget"
           onclick="reviewRecordFields(this.form.clearrecord.value);return false" style="<?php if($continue) echo "display:none"; ?>">
