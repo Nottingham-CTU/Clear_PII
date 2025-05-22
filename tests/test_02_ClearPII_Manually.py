@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class Test6ClearPIImanually():
+class Test02ClearPIImanually():
   def setup_method(self, method):
     self.driver = webdriver.Chrome()
     self.vars = {}
@@ -18,7 +18,7 @@ class Test6ClearPIImanually():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_6ClearPIImanually(self):
+  def test_02ClearPIImanually(self):
     self.driver.get("http://127.0.0.1/")
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
@@ -49,5 +49,4 @@ class Test6ClearPIImanually():
     self.driver.find_element(By.ID, "clear-record").send_keys("1")
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
-    self.driver.close()
   

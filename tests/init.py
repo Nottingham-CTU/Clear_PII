@@ -164,4 +164,8 @@ class TestInit():
     self.driver.find_element(By.NAME, "eoi_mobile").send_keys("07888888888")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
+    self.driver.execute_script("$(\'#footer\').remove();window.history.back()")
+    time.sleep(3)
+    self.driver.find_element(By.CSS_SELECTOR, "#rsd-men-link > span").click()
+    print("ECHOSCREENSHOT")
 

@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class Test7ManualClearPIIUseraccess():
+class Test03ManualClearPIIUseraccess():
   def setup_method(self, method):
     self.driver = webdriver.Chrome()
     self.vars = {}
@@ -18,7 +18,7 @@ class Test7ManualClearPIIUseraccess():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_7ManualClearPIIUseraccess(self):
+  def test_03ManualClearPIIUseraccess(self):
     self.driver.get("http://127.0.0.1/")
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
@@ -60,5 +60,4 @@ class Test7ManualClearPIIUseraccess():
     time.sleep(1)
     self.driver.execute_script("window.history.go(0)")
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
-    self.driver.close()
   

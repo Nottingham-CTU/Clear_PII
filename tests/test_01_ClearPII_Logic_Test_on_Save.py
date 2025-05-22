@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class Test5ClearPIILogicTestonSave():
+class Test01ClearPIILogicTestonSave():
   def setup_method(self, method):
     self.driver = webdriver.Chrome()
     self.vars = {}
@@ -25,7 +25,7 @@ class Test5ClearPIILogicTestonSave():
     if len(wh_now) > len(wh_then):
       return set(wh_now).difference(set(wh_then)).pop()
   
-  def test_5ClearPIILogicTestonSave(self):
+  def test_01ClearPIILogicTestonSave(self):
     self.driver.get("http://127.0.0.1/")
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
@@ -58,5 +58,4 @@ class Test5ClearPIILogicTestonSave():
     self.driver.find_element(By.CSS_SELECTOR, ".jqbuttonmed > span").click()
     self.driver.switch_to.window(self.vars["root"])
     self.driver.find_element(By.CSS_SELECTOR, ".ok-button").click()
-    self.driver.close()
   
