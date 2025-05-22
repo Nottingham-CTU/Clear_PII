@@ -53,5 +53,6 @@ class Test02ClearPIImanually():
     self.driver.find_element(By.ID, "clear-record").click()
     self.driver.find_element(By.ID, "clear-record").send_keys("1")
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
-    self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
+    assert self.driver.switch_to.alert.text == "There is no field data to be cleared for this record."
+    self.driver.switch_to.alert.accept()
   
