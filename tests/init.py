@@ -154,7 +154,7 @@ class TestInit():
     self.driver.find_element(By.CSS_SELECTOR, "#SurveyActionDropDown > span").click()
     self.vars["window_handles"] = self.driver.window_handles
     self.driver.find_element(By.CSS_SELECTOR, ".ui-menu-item:nth-child(1) > #surveyoption-openSurvey > span").click()
-    self.vars["win2568"] = self.wait_for_window(2000)
+    time.sleep(3)
     self.driver.switch_to.window(self.driver.window_handles[1])
     self.driver.find_element(By.NAME, "eoi_name").click()
     self.driver.find_element(By.NAME, "eoi_name").send_keys("Test")
