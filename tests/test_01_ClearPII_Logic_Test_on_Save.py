@@ -37,7 +37,7 @@ class Test01ClearPIILogicTestonSave():
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".nowrap:nth-child(2) > a > img").click()
     time.sleep(3)
-   self.driver.find_element(By.CSS_SELECTOR, "#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord > span").click()
+    self.driver.find_element(By.CSS_SELECTOR, "#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord > span").click()
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".ui-dialog-buttonset > .ui-button:nth-child(2)").click()
     self.driver.find_element(By.CSS_SELECTOR, "#\\__SUBMITBUTTONS__-div > #submit-btn-saverecord > span").click()
