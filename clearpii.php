@@ -25,7 +25,7 @@ if (!empty($_POST) && isset($_POST['action'])) {
         $record = htmlspecialchars($_POST['record_id'], ENT_QUOTES );
         $fieldsSelected = explode(",", $_POST['selected_fields']);
         
-        $data = REDCap::getData( 'array', $record);
+        $data = \REDCap::getData( 'array', $record);
         if($data == null)
         {
             $module->alert("Record cannot be found in project.");
