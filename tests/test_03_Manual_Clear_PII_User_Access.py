@@ -19,7 +19,11 @@ class Test7ManualClearPIIUseraccess():
     self.driver.quit()
   
   def test_7ManualClearPIIUseraccess(self):
-    self.driver.get("https://redcap03.nottingham.ac.uk/redcap_v15.0.10/ProjectSetup/index.php?pid=532")
+    self.driver.get("http://127.0.0.1/")
+    self.driver.find_element(By.LINK_TEXT, "My Projects").click()
+    elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
+    assert len(elements) > 0
+    self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
     time.sleep(3)
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
     time.sleep(3)

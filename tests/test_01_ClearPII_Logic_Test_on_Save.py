@@ -26,7 +26,11 @@ class Test5ClearPIILogicTestonSave():
       return set(wh_now).difference(set(wh_then)).pop()
   
   def test_5ClearPIILogicTestonSave(self):
-    self.driver.get("https://redcap03.nottingham.ac.uk/redcap_v15.0.10/ProjectSetup/index.php?pid=532")
+    self.driver.get("http://127.0.0.1/")
+    self.driver.find_element(By.LINK_TEXT, "My Projects").click()
+    elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
+    assert len(elements) > 0
+    self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
     self.driver.find_element(By.CSS_SELECTOR, "#rsd-men-link > span").click()
     time.sleep(3)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-rcgreen:nth-child(1)").click()
