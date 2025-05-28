@@ -57,8 +57,8 @@ class Test01ClearPIILogicTestonSave():
     self.driver.execute_script("$(\'[name=\"eoi_date\"]\').val(\'\')")
     self.driver.find_element(By.NAME, "eoi_date").send_keys("08-04-2025")
     self.driver.find_element(By.NAME, "submit-btn-saverecord").click()
-    self.driver.back()
-    self.driver.get(vars["get_url"])
+    self.driver.execute_script("window.history.go(-1)")
+    WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "My Projects")))
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
     assert len(elements) > 0
