@@ -200,13 +200,23 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
     {
         $errMsg = "";
         
-     /*   for ( $i = 0; $i < count( $settings['pi-vars'] ); $i++ )
+        for ( $i = 0; $i < count( $settings['pi-vars'] ); $i++ )
         {
             if($settings['pi-event'][$i] == '' || $settings['pi-field'][$i] == '')
             {
                 $errMsg .= "Participnat Identifier variable Event or Field " . ($i+1) . " is missing\n";
             }
-        }*/
+            
+            // add validation for repeating forms
+            $form_name= \REDCap::getDataDictionary(PROJECT_ID,'array',false,$settings['pi-field'][$i])[$settings['pi-field'][$i]]['form_name'];
+            global $Proj;
+            $isRepeating = $Proj->isRepeatingFormOrEvent($settings['pi-event'][$i], $form_name);
+            if($isRepeating)
+            {
+                $errMsg .=  "Participnat Identifier variable Event or Field " . ($i+1) . " cannot be on repeating form or event\n";  
+            }
+                
+        }
                 
         if ($settings['clear-disc-pii-logic'] != "") 
         {

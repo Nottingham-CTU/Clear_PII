@@ -16,7 +16,7 @@ This module provides project-level configuration options
 * Participant Identifier variables to blank (must have at least one PII variable)
     - Event
     - Field
-* Logic to run when record is saved or in the cron job that uses 'today' or 'now' inside datediff(). If now/today is not used within the datediff, the logic will only when the record is saved. 
+* The logic will only RUN when record is saved or in the cron job that uses 'today' or 'now' inside datediff(). If now/today is not used within the datediff, the logic will only when the record is saved. 
 
 
 ## Accessing Clear Discontinued PIIs Manually
