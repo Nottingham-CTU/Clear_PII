@@ -60,4 +60,5 @@ class Test03ManualClearPIIUseraccess():
     time.sleep(1)
     self.driver.execute_script("location.reload()")
     self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
+    print("ECHOSCREENSHOT")
   
