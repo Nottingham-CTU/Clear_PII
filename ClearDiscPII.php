@@ -23,7 +23,7 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
         {
             $role = trim( $role );
             
-            if ( $role === '*' || $role === $this->getUserRole() )
+            if ( $role === '*' || $role === $this->getUserRole() || $this->getUser()->isSuperUser())
             {
                 return true;
             }
@@ -204,7 +204,7 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
         {
             if($settings['pi-event'][$i] == '' || $settings['pi-field'][$i] == '')
             {
-                $errMsg .= "Participnat Identifier variable Event or Field " . ($i+1) . " is missing\n";
+                $errMsg .= "Participant Identifier variable Event or Field " . ($i+1) . " is missing\n";
             }
             
             // add validation for repeating forms
@@ -213,9 +213,14 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
             $isRepeating = $Proj->isRepeatingFormOrEvent($settings['pi-event'][$i], $form_name);
             if($isRepeating)
             {
-                $errMsg .=  "Participnat Identifier variable Event or Field " . ($i+1) . " cannot be on repeating form or event\n";  
+                $errMsg .=  "Participant Identifier variable Event or Field " . ($i+1) . " cannot be on repeating form or event\n";  
             }
                 
+        }
+        
+        if(!$this->getUser()->isSuperUser())
+        {
+            $errMsg .= "Only REDCap administartors can modify settings.\n";
         }
                 
         if ($settings['clear-disc-pii-logic'] != "") 

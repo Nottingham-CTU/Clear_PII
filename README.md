@@ -8,7 +8,8 @@ fields used for Participant Identifier variables should not be on a repeating in
 
 ## Project-level configuration options
 
-This module provides project-level configuration options
+This module provides project-level configuration options that can be modified by administrators ONLY. 
+Note: settings can be imported by all users with 'Project Design and Setup' rights.
 
 ### Settings
 
