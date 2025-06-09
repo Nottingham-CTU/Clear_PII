@@ -83,7 +83,7 @@ class TestInit():
     time.sleep(1)
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     time.sleep(1)
-    self.driver.find_element(By.ID, "new_username_assign").send_keys(self.vars["username"])
+    self.driver.find_element(By.ID, "new_username_assign").send_keys("user")
     self.driver.find_element(By.ID, "assignUserBtn").click()
     time.sleep(3)
     dropdown = self.driver.find_element(By.ID, "user_role")
