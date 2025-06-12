@@ -1,7 +1,7 @@
 {
-	"name" :"Clear Discontinued Participant Identifier Information (PII)",
-	"namespace" : "Nottingham\\ClearDiscPII",
-	"description" : "Clear Discontinued Participant Identifier Information.",
+	"name" :"Clear Participant Identifier Information (PII)",
+	"namespace" : "Nottingham\\ClearPII",
+	"description" : "Clear Participant Identifier Information.",
 	"authors": [
 		{
 			"name": "Nina Clayton",
@@ -13,14 +13,14 @@
 	"compatibility" : { "redcap-version-min" : "10.4.1" },
 	"links" : {
 		"project" : [
-			{ "name" : "Clear Discontinued PIIs", "icon" : "far fa-trash-alt", "url" : "clearpii.php" }
+			{ "name" : "Clear PIIs", "icon" : "far fa-trash-alt", "url" : "manualclearpii.php" }
 		]
 	},
 	
 	"project-settings" : [
             {
-                "key" : "clear-disc-pii-user-roles",
-                "name" : "Roles with access to clear discontinued PII manually<br>(enter 1 role name per line or * for all roles)",
+                "key" : "clear-pii-user-roles",
+                "name" : "Roles with access to clear PII manually<br>(enter 1 role name per line or * for all roles)",
                 "type" : "textarea"
             },
             {
@@ -44,8 +44,8 @@
                 ]
             },
             {
-                "key" : "clear-disc-pii-logic",
-                "name" : "Clear discontinued PII automatically on following logic",
+                "key" : "clear-pii-logic",
+                "name" : "Clear PII automatically on following logic",
                 "type" : "textarea"
             }
                
@@ -53,10 +53,10 @@
 	],
         "crons": [
         {
-           "cron_name": "cleardiscpiiviacron",
+           "cron_name": "clearpiiviacron",
            "cron_description": "Cron that clears record fields on defined logic - cron is called every 4 hours",
-           "method": "clearDiscPIIViaCron",
-           "cron_frequency": "60",
+           "method": "clearPIIViaCron",
+           "cron_frequency": "14400",
            "cron_max_run_time": "1800"
         }
         ]

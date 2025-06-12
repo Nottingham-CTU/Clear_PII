@@ -1,6 +1,6 @@
-# Clear Discontinued Participant Identifier Information (PII)
+# Clear Participant Identifier Information (PII)
 
-This REDCap module clears discontinued participant identifier information (PII) either automatically on passing logic 
+This REDCap module clears participant identifier information (PII) either automatically on passing logic 
 or by manually selecting a record.
 
 Please note that this module is not intended to be used with repeating instruments or events. All
@@ -20,14 +20,14 @@ Note: settings can be imported by all users with 'Project Design and Setup' righ
 * The logic will only RUN when record is saved or in the cron job that uses 'today' or 'now' inside datediff(). If now/today is not used within the datediff, the logic will only when the record is saved. 
 
 
-## Accessing Clear Discontinued PIIs Manually
+## Accessing Clear PIIs Manually
 
-If your role is configured to have access, the link to the Clear Discontinued PIIs plugin pages will appear under the external modules heading once
+If your role is configured to have access, the link to the Clear PIIs plugin pages will appear under the external modules heading once
 the module has been enabled in a project. 
 This will enable the user to manually remove data from PIIs fields configured.
 
 
-## Clear Discontinued PIIs Manually
+## Clear PIIs Manually
 
 On the main page:
     * a list of PIIs fields configured in the external module that can have data removed/cleared (at least one field must be selected).
@@ -40,12 +40,12 @@ Once the clear record button is clicked and initial checks are done, a table wit
 
 If the data fails to clear the failure is logged in the REDCap project logging.
 
-### Clear Discontinued PIIs Cron Jobs
+### Clear PIIs Cron Jobs
 
 There is one cron jobs in the module.
 
-* clearDiscPIIViaCron - Check logic in Clear Discontinued PIIs settings that uses 'today' or 'now' inside datediff() function to clear specified PII fields- cron is called every 4 hours
+* clearPIIViaCron - Check logic in Clear PIIs settings that uses 'today' or 'now' inside datediff() function to clear specified PII fields- cron is called every 4 hours
 
-Note: For testing purposes the 'clearDiscPIIViaCron' cron job, 'cron_frequency' (in seconds) can be updated run more frequently. The module needs to be restarted for the module to use the new value. 
+Note: For testing purposes the 'clearPIIViaCron' cron job, 'cron_frequency' (in seconds) can be updated run more frequently. The module needs to be restarted for the module to use the new value. 
 
 

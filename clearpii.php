@@ -1,295 +1,265 @@
 <?php
 
-namespace Nottingham\ClearDiscPII;
-/**
- * 	Clear participant record fields manually.
- */
-$continue = false;
-$record = '';
-$fieldsSelected = array();
-$status = $_GET['status'];
-$message = $_GET['message'];
-$piiEvents = $module->getProjectSetting('pi-event', $project_id);
-$piiFields = $module->getProjectSetting('pi-field', $project_id);
+namespace Nottingham\ClearPII;
 
-// Display the project header
-require_once APP_PATH_DOCROOT . 'ProjectGeneral/header.php';
+class ClearPII extends \ExternalModules\AbstractExternalModule {
 
-// Handle form submissions.
-if (!empty($_POST) && isset($_POST['action'])) {  
-    // records have been selected, check if their is PII field data that can be cleared
-    // if there is data to be cleared, put up values so user can decide whether to continue or not
-    if ($_POST['action'] == 'select_record') {
+    // Show the link based on whether the user has no access, hide the link.
+    function redcap_module_link_check_display($project_id, $link) {
+       
+        if ($this->isAccessibleToRole($project_id)) {
+            return $link;
+        }
 
-        $continue=true;
-        $record = htmlspecialchars($_POST['record_id'], ENT_QUOTES );
-        $fieldsSelected = explode(",", $_POST['selected_fields']);
-        
-        $data = \REDCap::getData( 'array', $record);
-        if($data == null)
+        return null;
+    }
+    
+
+    // Check if the role has access.
+    function isAccessibleToRole($project_id) {
+        $role_access = $this->getProjectSetting( 'clear-pii-user-roles', $project_id );
+        // Check each allowed role and allow access if the user has the role.
+        foreach ( explode( "\n", $role_access) as $role )
         {
-            $module->alert("Record cannot be found in project.");
-            $continue=false;
+            $role = trim( $role );
+            
+            if ( $role === '*' || $role === $this->getUserRole() || $this->getUser()->isSuperUser())
+            {
+                return true;
+            }
+        } 
+        // Don't allow access .
+        return false;
+    }
+    
+    // Get the role name of the current user.
+    function getUserRole()
+    {
+        $userRights = $this->getUser()->getRights();
+        if ( $userRights === null )
+        {
+                return null;
+        }
+        if ( $userRights[ 'role_id' ] === null )
+        {
+                return null;
+        }
+        return $userRights[ 'role_name' ];
+    }
+
+    
+
+
+    // Function called by the CRON to check any pii fields need to be cleared for discontinued/withdrawn participants with datediff+today/now
+    public function clearPIIViaCron() {
+
+        foreach ($this->getProjectsWithModuleEnabled() as $project_id) 
+        { 
+            $logic = $this->getProjectSetting( 'clear-pii-logic', $project_id );
+            
+            // only if check if logic is with datediff+today/now
+            if($logic !== ''  && ((stripos($logic, 'datediff') !== false 
+                        && stripos($logic, 'now') !== false) ||  (stripos($logic, 'datediff') !== false 
+                        && stripos($logic, 'today') !== false))) 
+            {
+               
+                 // get a list of events and fields that need to be cleared
+                $pii_events = $this->getProjectSetting('pi-event', $project_id);
+                $pii_fields = $this->getProjectSetting('pi-field', $project_id);
+
+                $record_data = \REDCap::getData($project_id, 'array', null, $pii_fields, $pii_events);
+
+                foreach (array_keys($record_data) as $record)
+                {
+                    // check if there is PII field data that needs to be cleared
+                   $bSave = false;
+                   for ( $i = 0; $i < count($pii_events); $i++ )
+                   {
+                        if($pii_events[$i] != '' && $pii_fields[$i] != '' && $record_data[$record][$pii_events[$i]][$pii_fields[$i]] != '')
+                       {
+                           $bSave = true;
+                           break;
+                       }
+                   }
+
+                   // if there is PII field data, check logic and if passes logic, clear fields
+                   if($bSave)
+                   {
+                        $passedLogic = \REDCap::evaluateLogic($logic, $project_id, $record);
+                        if($passedLogic)
+                        {
+                            $this->clearPII($project_id, $record, 'in cron job', array(), $record_data);
+                        }
+                   }
+                   
+                       
+                }
+            }
+        }
+    }
+    
+    public function alert($msg) {
+        echo "<script type='text/javascript'>alert('".htmlspecialchars($msg, ENT_QUOTES )."');</script>";
+    }
+
+    // run logic, if configured & triggered by save to clear .
+    function redcap_save_record( $project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance)
+    {  
+        $logic = $this->getProjectSetting( 'clear-pii-logic', $project_id );
+         // Has conditional logic?
+        $triggerOnLogic = ($logic != '');
+        
+         
+        // Trigger it based on logic?
+        if ($triggerOnLogic) {
+            
+            
+            // Get data for this record
+            global $Proj;
+
+            // Is this a repeating form/event?
+            $isRepeatingFormOrEvent = $Proj->isRepeatingFormOrEvent($event_id, $instrument);
+            $repeat_instrument = $Proj->isRepeatingForm($event_id, $instrument) ? $instrument : '';
+            
+            if ($isRepeatingFormOrEvent) {
+                $passedLogicTest = \REDCap::evaluateLogic($logic, $project_id, $record, $event_id, $repeat_instance, $instrument, $instrument);
+            } else {
+                $passedLogicTest = \REDCap::evaluateLogic($logic, $project_id, $record, $event_id, 1, "", $instrument);
+            }
+            
+             // If passed logic, clear fields
+            if ($passedLogicTest)
+            {
+                $this->clearPII($project_id, $record, 'on save.');
+            }
+        }
+                 
+    }
+    
+    function clearPII($project_id, $record, $type, $fields = array(), $data = array())
+    {
+        
+        $inputData = array();
+
+        // get a list of events and fields that need to be cleared
+        $pii_events = $this->getProjectSetting('pi-event', $project_id);
+        $pii_fields = $this->getProjectSetting('pi-field', $project_id);
+        
+        // only bother to get record data if not passed 
+        if(count($data) === 0)
+        {
+            $data = \REDCap::getData($project_id, 'array', $record, $pii_fields, $pii_events);
+        }
+           
+        $nSaveCount = 0;
+        
+        if(count($fields) > 0)
+        {
+            // called from manual clear incase not all PII fields are checked to check if data needs to be cleared
+            for ( $i = 0; $i < count($fields); $i++ )
+            {
+                if($data[$record][$pii_events[$fields[$i]]][$pii_fields[$fields[$i]]] != '')
+                { 
+                    $inputData[$record][$pii_events[$fields[$i]]][$pii_fields[$fields[$i]]] = '';
+                    $nSaveCount++;
+                }  
+            }
         }
         else
         {
-            $clear_data = false;
-            for ( $i = 0; $i < count($fieldsSelected); $i++ )
+            // goes through list events and fields configured in EM settings to check if data needs to be cleared
+            for ( $i = 0; $i < count($pii_events); $i++ )
             {
-                if($data[$record][$piiEvents[$fieldsSelected[$i]]][$piiFields[$fieldsSelected[$i]]] != '')
+                if($pii_events[$i] != '' && $pii_fields[$i] != '' && $data[$record][$pii_events[$i]][$pii_fields[$i]] != '')
                 {
-                    $clear_data = true;
-                    break;
-                }  
+                    $inputData[$record][$pii_events[$i]][$pii_fields[$i]] = '';
+                    $nSaveCount++;
+                }
             }
-            if($clear_data === false)
+        }
+
+        if($nSaveCount > 0)
+        {
+             //clear PII fields and log 
+            $saveData = \REDCap::saveData($project_id, 'array', $inputData, 'overwrite', 'YMD', 'flat', null, true );
+            if($saveData['item_count'] ===  $nSaveCount)
             {
-                $module->alert("There is no field data to be cleared for this record.");
-                $continue=false;
+                \REDCap::logEvent('Clear PII', "Clearing fields ".$type, "Clearing fields ".$type, $record, "", $project_id);
+                return true;
             }
+            else
+            {
+                \REDCap::logEvent('Clear PII', "Failed to clear fields ".$type."\nErrors=".implode("\n",$saveData['errors']), "Clearing fields ".$type, $record, "", $project_id);
+                
+            }
+        }
+        return false;
+    }
+
+    function validateSettings($settings) 
+    {
+        $errMsg = "";
+        
+        for ( $i = 0; $i < count( $settings['pi-vars'] ); $i++ )
+        {
+            if($settings['pi-event'][$i] == '' || $settings['pi-field'][$i] == '')
+            {
+                $errMsg .= "Participant Identifier variable Event or Field " . ($i+1) . " is missing\n";
+            }
+            
+            // add validation for repeating forms
+            $form_name= \REDCap::getDataDictionary(PROJECT_ID,'array',false,$settings['pi-field'][$i])[$settings['pi-field'][$i]]['form_name'];
+            global $Proj;
+            $isRepeating = $Proj->isRepeatingFormOrEvent($settings['pi-event'][$i], $form_name);
+            if($isRepeating)
+            {
+                $errMsg .=  "Participant Identifier variable Event or Field " . ($i+1) . " cannot be on repeating form or event\n";  
+            }
+                
         }
         
-    }
-    // clear pii fields for record that has data that needs to cleared
-    else if ($_POST['action'] == 'clear_record') {
-        $record = htmlspecialchars($_POST['record_id'], ENT_QUOTES );
-        $fieldsSelected = explode(",", $_POST['selected_fields']);
-        if($module->clearPII($project_id, $record, 'on manual selection.', $fieldsSelected))
+        if(!$this->getUser()->isSuperUser())
         {
-            $module->alert("Successfully cleared PII fields for record, ".$record.".");
-            $record = '';
-            $fieldsSelected = array();
+            $errMsg .= "Only REDCap administartors can modify settings.\n";
         }
-        else {
-            $module->alert("Failed cleared PII fields for record, ".$record.".");
-            $continue=false;
-        }
-    } 
-}
-
-
-// checks if the field is selected
-function isFieldSelected($value,  $selected)
-{
-    for ( $i = 0; $i < count($selected); $i++ )
-    {
-        if($selected[$i] == $value)
+                
+        if ($settings['clear-pii-logic'] != "") 
         {
-            return true;
+            $logic = $settings['clear-pii-logic'];
+            // Clean
+            $logic = trim(html_entity_decode($logic, ENT_QUOTES));
+
+            // Check if calculation is valid
+            $logic = \Piping::pipeSpecialTags($logic, PROJECT_ID, null, null, null, USERID, true, null, null, false, false, false, true);
+
+            // Obtain array of error fields that are not real fields
+            $error_fields = \Design::validateBranchingCalc($logic);
+
+	
+            // Return list of fields that do not exist (i.e. were entered incorrectly), else continue.
+            if (!empty($error_fields))
+            {
+                $errMsg .= "The following fields listed in your logic do not exist in this project and thus cannot be used. These fields must be removed\n - ".implode("\n - ", $error_fields);
+
+            }
+            else
+            {
+                $logicIsValid = \LogicTester::isValid($logic);
+                if(!$logicIsValid)
+                {
+                    $errMsg .= "Logic is invalid";
+                }
+            }
+            
+           
+
         }
+       
+
+        if ($errMsg !== '') {
+            return $errMsg;
+        }
+        return null;
     }
-    return false;
+
 }
-
-global $Proj;
-
-
-
-
-
-// Define page style.
-$style = '
-	table.dataTable thead tr th {
-		background-color: #FFFFE0;
-		border-top: 1px solid #aaaaaa;
-		border-bottom: 1px solid #aaaaaa;
-	}
-	table.dataTable.cell-border thead tr th {
-		border-right: 1px solid #ddd;
-	}
-	table.dataTable.cell-border thead tr th:first-child {
-		border-left: 1px solid #ddd;
-	}
-	table.dataTable tr td a.rl { font-size:8pt;font-family:Verdana;text-decoration:underline; }
-	table.dataTable tr th { line-height: 11px; }
-	table.dataTable tr th.rpthdrc { border-top:0; }
-	table.dataTable tr th.rptchclbl { border-bottom:1px dashed #ccc; }
-	table.dataTable tbody td, table.dataTable thead th { padding:5px; }
-	table.dataTable tbody tr:nth-child(2n) { background-color: #eee !important; }
-	table.dataTable tbody tr:nth-chlid(2n+1) { background-color: #fcfef5 !important; }
-	';
-echo '<script type="text/javascript">',
-	 '(function (){var el = document.createElement(\'style\');',
-	 'el.setAttribute(\'type\',\'text/css\');',
-	 'el.innerText = \'', addslashes( preg_replace( "/[\t\r\n ]+/", ' ', $style ) ), '\';',
-	 'document.getElementsByTagName(\'head\')[0].appendChild(el)})()</script>';
-
-?>
-
-
-
-<div class="projhdr"><i class="far fa-list-alt"></i> Clear Participant Identifier Information (PII)</div>
-<a href="<?php echo $module->getUrl( 'README.md' );?>" target="_blank"><i class="fas fa-book fs11"></i> View Documentation</a>
-
-<form method="post" id="clear-record-frm">
- <input type="hidden" name="action" id="action" value="">
- <input type='hidden' name="selected_fields" id="selected_fields"  value="">
- <p>Please select fields with participant identifier information that you wish to clear.</p>
- <table id="pii-fields" class="dataTable cell-border no-footer">
-  <thead style="position:sticky;top:0px">
-   <tr>
-    <th>Field</th>
-    <th>Clear Field</th>
-   </tr>
-  </thead>
-  <tbody>
-<?php
-
-for ( $i = 0; $i < count($piiEvents); $i++ )
-{  
-?>
-   <tr>
-    <td style="text-align:left"><?php echo htmlspecialchars($Proj->metadata[$piiFields[$i]]['element_label']. ' (['.$Proj->getUniqueEventNames($piiEvents[$i]).']['.$piiFields[$i].'])', ENT_QUOTES )?></td>
-    <td>&nbsp;<input type="checkbox"
-                     name="clear_field[]" <?php if(isFieldSelected($i, $fieldsSelected)) echo "checked"; ?> <?php if($continue) echo "disabled"; ?> value="<?php echo htmlspecialchars($i, ENT_QUOTES ); ?>"></td>
-<?php
-}
-?>
-    </tr>
-  </tbody>
- </table><br>
- <p>Enter a participant that has disconitued/withdrawn should be selected to remove participant identifier information.</p>
- <p>
-  Record Id:&nbsp;&nbsp; <input type="text" <?php if($continue) echo "disabled"; ?> value="<?php echo htmlspecialchars($record, ENT_QUOTES );?>" id="clear-record" name="clearrecord"> <br><br>  
-  <input type="hidden" name="csrf_token" value="<?php echo \System::getCsrfToken(); ?>">
-  <input type='hidden' id='record_id' name='record_id' value='<?php echo htmlspecialchars($record, ENT_QUOTES );?>'>
-  <button id="review-record-button" class="jqbuttonmed ui-button ui-corner-all ui-widget"
-          onclick="reviewRecordFields(this.form.clearrecord.value);return false" style="<?php if($continue) echo "display:none"; ?>">
-   <span style="vertical-align:middle;color:#A00000"><i class="fas fa-trash-alt"></i> Clear Record</span>
-  </button>
-<?php
-  if($continue)
-  {
-?>
-  <div id="pii-fields-cleared">
-  <p>List of values from selected fields with participant identifier information that with be cleared for record, <b><?php echo htmlspecialchars($record, ENT_QUOTES );?></b>.</p>
-  <table class="dataTable cell-border no-footer">
-  <thead style="position:sticky;top:0px">
-   <tr>
-    <th>Field to clear</th>
-    <th>Value</th>
-   </tr>
-  </thead>
-  <tbody>
-<?php
-
-for ( $i = 0; $i < count($fieldsSelected); $i++ )
-{
-    if($data[$record][$piiEvents[$fieldsSelected[$i]]][$piiFields[$fieldsSelected[$i]]] != '')
-    {
-?>
-    <tr>
-     <td style="text-align:left"><?php echo htmlspecialchars($Proj->metadata[$piiFields[$fieldsSelected[$i]]]['element_label']. ' (['.$Proj->getUniqueEventNames($piiEvents[$fieldsSelected[$i]]).']['.$piiFields[$fieldsSelected[$i]].'])', ENT_QUOTES )?></td>
-     <td style="text-align:left"><?php echo htmlspecialchars($data[$record][$piiEvents[$fieldsSelected[$i]]][$piiFields[$fieldsSelected[$i]]], ENT_QUOTES )?></td>
-<?php
-    }
-}
-?>
-    </tr>
-  </tbody>
-  </table></div><br>
-   <div>
-   <button id="clear-record-button"  style="width:100px;background-color:green;" class="jqbuttonmed ui-button ui-corner-all ui-widget" onclick="clearRecordFields(this.form.clearrecord.value);return false">
-   <span style="vertical-align:middle;color:white"><i class="fas fa-trash-alt"></i> Continue</span>
-   </button>&nbsp;&nbsp;
-   <button id="cancel-clear" style="width:100px;background-color:green;" class="jqbuttonmed ui-button ui-corner-all ui-widget" onclick="cancelClear();return false">
-   <span style="vertical-align:middle;color:white;">Cancel</span>
-   </button>
-   <div>
-<?php
-  }
- 
-?>
- </p>
-</form>
-<script type="text/javascript">
-    
-  // called to clear data, checks field is slected and record has been entered
-  function reviewRecordFields(record)
-  {
-     var vPIIFieldsSelected = $('#pii-fields input[type=checkbox]:checked');
-      
-      $("#record_id").val(record);
-      $("#action").val('select_record');
-   
-      if(vPIIFieldsSelected.length < 1)
-      {
-         alert("At least one field must be selected.") ;
-         return false;
-      }
-      if(record.trim() == "")
-      {
-         alert("A record id must be entered.") ;
-         return false;
-      }
-      
-
-      selectedValues = '';
-      for ( var i = 0; i < vPIIFieldsSelected.length; i++ )
-      {
-          if(selectedValues != '')
-          {
-              selectedValues += ',';
-          }
-         selectedValues += vPIIFieldsSelected[i].value;   
-      }
-
-      $("#selected_fields").val(selectedValues);
-      $("#clear-record-frm").submit();
-  
-     
-  }
-  
-  // called if the user wishes to clear the PII field data, once values are returned
-  function clearRecordFields(record)
-  {
-      var vPIIFieldsSelected = $('#pii-fields input[type=checkbox]:checked');
-      $("#record_id").val(record);
-      $("#action").val('clear_record');
-   
-      selectedValues = '';
-      for ( var i = 0; i < vPIIFieldsSelected.length; i++ )
-      {
-          if(selectedValues != '')
-          {
-              selectedValues += ',';
-          }
-         selectedValues += vPIIFieldsSelected[i].value;   
-      }
-
-      $("#selected_fields").val(selectedValues);
-      $("#clear-record-frm").submit();
-  }
-  
-  // called if the cancel button is clicked
-  function cancelClear()
-  {
-      var vPIIFields = $('#pii-fields input[type=checkbox]');
-    
-      for ( var i = 0; i < vPIIFields.length; i++ )
-      {
-         vPIIFields[i].disabled = false;
-      }
-   
-      var vRecord = $('#clear-record');
-      vRecord[0].disabled = false;
-      
-      var vButton = $('#review-record-button');
-      vButton.css('display', '')
-      
-      var vTableDiv = $('#pii-fields-cleared');
-      vTableDiv.remove();
-      vButton = $('#clear-record-button');
-      vButton.remove();
-      vButton = $('#cancel-clear');
-      vButton.remove();
-      
-      
-  }
-</script>
-
-<?php
-
-// Display the project footer
-require_once APP_PATH_DOCROOT . 'ProjectGeneral/footer.php';
-

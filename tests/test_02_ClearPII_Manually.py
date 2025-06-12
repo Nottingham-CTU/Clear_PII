@@ -24,7 +24,7 @@ class Test02ClearPIImanually():
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
-    self.driver.find_element(By.LINK_TEXT, "Clear Discontinued PIIs").click()
+    self.driver.find_element(By.LINK_TEXT, "Clear PIIs").click()
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
     time.sleep(1)
