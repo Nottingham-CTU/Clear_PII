@@ -9,12 +9,12 @@
 		"file" : "test_02_ClearPII_Manually.py",
 		"name" : "Clear PII manually",
 		"expected" : "Clear PII manually successfully",
-		"scenario" : "Navigate to Clear Discontinued PIIs menu item, and clear checked fields with data"
+		"scenario" : "Navigate to Clear PIIs menu item, and clear checked fields with data"
 	},
 	{
 		"file" : "test_03_Manual_Clear_PII_User_Access.py",
-		"name" : "Clear Discontinued PIIs access",
-		"expected" : "Clear Discontinued PIIs menu item avialable for specified users only",
-		"scenario" : "change user role, Clear Discontinued PIIs menu item only available for users with access"
+		"name" : "Clear PIIs access",
+		"expected" : "Clear PIIs menu item avialable for specified users only",
+		"scenario" : "change user role, Clear PIIs menu item only available for users with access"
 	}
 ]

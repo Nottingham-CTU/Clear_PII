@@ -1,8 +1,8 @@
 <?php
 
-namespace Nottingham\ClearDiscPII;
+namespace Nottingham\ClearPII;
 
-class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
+class ClearPII extends \ExternalModules\AbstractExternalModule {
 
     // Show the link based on whether the user has no access, hide the link.
     function redcap_module_link_check_display($project_id, $link) {
@@ -17,7 +17,7 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
 
     // Check if the role has access.
     function isAccessibleToRole($project_id) {
-        $role_access = $this->getProjectSetting( 'clear-disc-pii-user-roles', $project_id );
+        $role_access = $this->getProjectSetting( 'clear-pii-user-roles', $project_id );
         // Check each allowed role and allow access if the user has the role.
         foreach ( explode( "\n", $role_access) as $role )
         {
@@ -50,12 +50,12 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
     
 
 
-    // Function called by the CRON to check any pii fields need to be cleared for discontinued participants with datediff+today/now
-    public function clearDiscPIIViaCron() {
+    // Function called by the CRON to check any pii fields need to be cleared for discontinued/withdrawn participants with datediff+today/now
+    public function clearPIIViaCron() {
 
         foreach ($this->getProjectsWithModuleEnabled() as $project_id) 
         { 
-            $logic = $this->getProjectSetting( 'clear-disc-pii-logic', $project_id );
+            $logic = $this->getProjectSetting( 'clear-pii-logic', $project_id );
             
             // only if check if logic is with datediff+today/now
             if($logic !== ''  && ((stripos($logic, 'datediff') !== false 
@@ -105,7 +105,7 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
     // run logic, if configured & triggered by save to clear .
     function redcap_save_record( $project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance)
     {  
-        $logic = $this->getProjectSetting( 'clear-disc-pii-logic', $project_id );
+        $logic = $this->getProjectSetting( 'clear-pii-logic', $project_id );
          // Has conditional logic?
         $triggerOnLogic = ($logic != '');
         
@@ -184,12 +184,12 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
             $saveData = \REDCap::saveData($project_id, 'array', $inputData, 'overwrite', 'YMD', 'flat', null, true );
             if($saveData['item_count'] ===  $nSaveCount)
             {
-                \REDCap::logEvent('Clear Discontinued PII', "Clearing fields ".$type, "Clearing fields ".$type, $record, "", $project_id);
+                \REDCap::logEvent('Clear PII', "Clearing fields ".$type, "Clearing fields ".$type, $record, "", $project_id);
                 return true;
             }
             else
             {
-                \REDCap::logEvent('Clear Discontinued PII', "Failed to clear fields ".$type."\nErrors=".implode("\n",$saveData['errors']), "Clearing fields ".$type, $record, "", $project_id);
+                \REDCap::logEvent('Clear PII', "Failed to clear fields ".$type."\nErrors=".implode("\n",$saveData['errors']), "Clearing fields ".$type, $record, "", $project_id);
                 
             }
         }
@@ -223,9 +223,9 @@ class ClearDiscPII extends \ExternalModules\AbstractExternalModule {
             $errMsg .= "Only REDCap administartors can modify settings.\n";
         }
                 
-        if ($settings['clear-disc-pii-logic'] != "") 
+        if ($settings['clear-pii-logic'] != "") 
         {
-            $logic = $settings['clear-disc-pii-logic'];
+            $logic = $settings['clear-pii-logic'];
             // Clean
             $logic = trim(html_entity_decode($logic, ENT_QUOTES));
 

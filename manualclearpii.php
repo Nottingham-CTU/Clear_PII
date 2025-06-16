@@ -1,6 +1,6 @@
 <?php
 
-namespace Nottingham\ClearDiscPII;
+namespace Nottingham\ClearPII;
 /**
  * 	Clear participant record fields manually.
  */
@@ -148,7 +148,7 @@ for ( $i = 0; $i < count($piiEvents); $i++ )
     </tr>
   </tbody>
  </table><br>
- <p>Enter a participant that has disconitued/withdrawn should be selected to remove participant identifier information.</p>
+ <p>Enter a participant that has changed trial status to remove participant identifier information e.g. discontinued/withdrawn.</p>
  <p>
   Record Id:&nbsp;&nbsp; <input type="text" <?php if($continue) echo "disabled"; ?> value="<?php echo htmlspecialchars($record, ENT_QUOTES );?>" id="clear-record" name="clearrecord"> <br><br>  
   <input type="hidden" name="csrf_token" value="<?php echo \System::getCsrfToken(); ?>">
