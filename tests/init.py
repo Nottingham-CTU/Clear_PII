@@ -143,9 +143,9 @@ class TestInit():
     actions = ActionChains(self.driver)
     Action drawAction = actions.moveToElement(element,0,0) //start points x axis and y axis. 
     actions.click()
-    actions.moveByOffset(0, 5) // 2nd points (x1,y1)
+    actions.moveByOffset(0, 5) 
     actions.click()
-    actions.moveByOffset(5, 10)// 3rd points (x2,y2)
+    actions.moveByOffset(5, 10)
     actions.doubleClick()
     actions.build();
     drawAction.perform();
