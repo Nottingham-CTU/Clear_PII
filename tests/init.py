@@ -139,6 +139,7 @@ class TestInit():
     self.driver.find_element(By.NAME, "oth_pi_id").send_keys("Test 2")
     self.driver.find_element(By.ID, "opt-oth_pi_yes_no_0").click()
     element = self.driver.find_element(By.LINK_TEXT, "Add signature")
+    print("ECHOSCREENSHOT")
     actions = ActionChains(self.driver)
     actions.move_to_element(element).perform()
     self.driver.find_element(By.LINK_TEXT, "Add signature").click()
