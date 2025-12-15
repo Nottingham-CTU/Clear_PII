@@ -144,10 +144,14 @@ class TestInit():
     actions.move_to_element(element).click_and_hold().perform()
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
     actions = ActionChains(self.driver)
-    actions.move_to_element(element).perform()
-    element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
-    actions = ActionChains(self.driver)
-    actions.move_to_element(element).release().perform()
+    Action drawAction = actions.moveToElement(element,0,0) //start points x axis and y axis. 
+              .click()
+              .moveByOffset(0, 5) // 2nd points (x1,y1)
+              .click()
+              .moveByOffset(5, 10)// 3rd points (x2,y2)
+              .doubleClick()
+              .build();
+    drawAction.perform();
     self.driver.find_element(By.CSS_SELECTOR, ".jSignature").click()
     self.driver.find_element(By.CSS_SELECTOR, ".btn-fileupload:nth-child(1)").click()
     self.driver.find_element(By.NAME, "myfile").click()
