@@ -50,6 +50,8 @@ class Test02ClearPIImanually():
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"4\"]\').prop(\'checked\', true);")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"5\"]\').prop(\'checked\', true);")
     self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"6\"]\').prop(\'checked\', true);")
+    self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"7\"]\').prop(\'checked\', true);")
+    self.driver.execute_script("$(\'[name=\"clear_field[]\"][value=\"8\"]\').prop(\'checked\', true);")
     self.driver.find_element(By.ID, "clear-record").click()
     self.driver.find_element(By.ID, "clear-record").send_keys("1")
     self.driver.find_element(By.CSS_SELECTOR, "#review-record-button > span").click()
