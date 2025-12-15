@@ -139,7 +139,7 @@ class TestInit():
     self.driver.find_element(By.NAME, "oth_pi_id").send_keys("Test 2")
     self.driver.find_element(By.ID, "opt-oth_pi_yes_no_0").click()
     self.driver.find_element(By.LINK_TEXT, "Add signature").click()
-    WebElement canvas = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
+    canvas = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
     actions = ActionChains(self.driver)
     actions.move_to_element(canvas).perform()
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
