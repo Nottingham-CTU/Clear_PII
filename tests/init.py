@@ -148,8 +148,6 @@ class TestInit():
     self.driver.find_element(By.NAME, "myfile").send_keys("REPODIR/tests/dirname.txt")
     self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc:nth-child(3)").click()
     time.sleep(1)
-    self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc:nth-child(3)").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".ui-button:nth-child(1)").click()
     self.driver.find_element(By.NAME, "oth_pi_complete").click()
     dropdown = self.driver.find_element(By.NAME, "oth_pi_complete")
     dropdown.find_element(By.XPATH, "//option[. = 'Complete']").click()
