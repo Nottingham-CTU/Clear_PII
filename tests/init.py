@@ -79,6 +79,7 @@ class TestInit():
     self.driver.find_element(By.NAME, "clear-pii-logic").click()
     self.driver.find_element(By.NAME, "clear-pii-logic").send_keys(" round(datediff([screening_arm_1][eoi_date], \"today\", \"d\",\"dmy\", true)) >= 1 AND [baseline_arm_1][oth_pi_yes_no] <> 1")
     self.driver.find_element(By.CSS_SELECTOR, ".modal-lg .save").click()
+    print("ECHOSCREENSHOT")
     time.sleep(5)
     self.driver.find_element(By.LINK_TEXT, "User Rights").click()
     time.sleep(1)
