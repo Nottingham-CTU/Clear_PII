@@ -142,7 +142,8 @@ class TestInit():
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".jSignature")))
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
     actions = ActionChains(self.driver)
-    actions.move_to_element(element).perform()
+    element.click()
+    actions.click_and_hold(element).perform()
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
  
     actions = ActionChains(self.driver)
