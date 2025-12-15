@@ -142,7 +142,7 @@ class TestInit():
     print("ECHOSCREENSHOT")
     element = self.driver.find_element(By.CSS_SELECTOR, "body")
     actions = ActionChains(self.driver)
-    actions.move_to_element(element, 0, 0).perform()
+    actions.move_to_element(element).perform()
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
     actions = ActionChains(self.driver)
     actions.move_to_element(element).click_and_hold().perform()
