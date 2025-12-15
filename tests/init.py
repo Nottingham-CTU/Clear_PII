@@ -141,16 +141,13 @@ class TestInit():
     self.driver.find_element(By.CSS_SELECTOR, "#signature-linknew span").click()
     element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
     actions = ActionChains(self.driver)
-    actions.move_to_element(element).click_and_hold().perform()
-    element = self.driver.find_element(By.CSS_SELECTOR, ".jSignature")
-    actions = ActionChains(self.driver)
     Action drawAction = actions.moveToElement(element,0,0) //start points x axis and y axis. 
-              .click()
-              .moveByOffset(0, 5) // 2nd points (x1,y1)
-              .click()
-              .moveByOffset(5, 10)// 3rd points (x2,y2)
-              .doubleClick()
-              .build();
+    actions.click()
+    actions.moveByOffset(0, 5) // 2nd points (x1,y1)
+    actions.click()
+    actions.moveByOffset(5, 10)// 3rd points (x2,y2)
+    actions.doubleClick()
+    actions.build();
     drawAction.perform();
     self.driver.find_element(By.CSS_SELECTOR, ".jSignature").click()
     self.driver.find_element(By.CSS_SELECTOR, ".btn-fileupload:nth-child(1)").click()
