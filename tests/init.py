@@ -144,7 +144,6 @@ class TestInit():
     element.click()
     self.driver.find_element(By.CSS_SELECTOR, ".jSignature").click()
     self.driver.find_element(By.CSS_SELECTOR, ".btn-fileupload:nth-child(1)").click()
-    self.driver.find_element(By.NAME, "file_upload").click()
     self.driver.find_element(By.NAME, "file_upload").send_keys("REPODIR/tests/dirname.txt")
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc:nth-child(3)").click()
