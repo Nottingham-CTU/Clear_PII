@@ -196,14 +196,17 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
             {
                 // delete any files if file upload or signature fields.
                 $file_info = "";
-                for ( $i = 0; $i < count($docIds); $i++ )
+                if($docIds !== null)
                 {
-                    if(\Files::deleteFileByDocId($docIds[$i], $project_id) == false)
+                    for ( $i = 0; $i < count($docIds); $i++ )
                     {
-                        $file_info .= "\nFailed to delete file(Doc Id=".$docIds[$i].")";
-                    }
-                    else {
-                        $file_info .= "\nRemoved file (Doc Id=".$docIds[$i].")";
+                        if(\Files::deleteFileByDocId($docIds[$i], $project_id) == false)
+                        {
+                            $file_info .= "\nFailed to delete file(Doc Id=".$docIds[$i].")";
+                        }
+                        else {
+                            $file_info .= "\nRemoved file (Doc Id=".$docIds[$i].")";
+                        }
                     }
                 }
                 \REDCap::logEvent('Clear PII', "Clearing fields ".$type.$file_info, "Clearing fields ".$type, $record, "", $project_id);
