@@ -144,7 +144,8 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
         // get a list of events and fields that need to be cleared
         $pii_events = $this->getProjectSetting('pi-event', $project_id);
         $pii_fields = $this->getProjectSetting('pi-field', $project_id);
-        
+        $field_info = \REDCap::getDataDictionary( $project_id, 'array', false, $pii_fields);
+    
         // only bother to get record data if not passed 
         if(count($data) === 0)
         {
@@ -160,6 +161,10 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
             {
                 if($data[$record][$pii_events[$fields[$i]]][$pii_fields[$fields[$i]]] != '')
                 { 
+                    if($field_info[$pii_fields[$fields[$i]]]['field_type'] == 'file')
+                    {
+                        $docIds[] = $data[$record][$pii_events[$fields[$i]]][$pii_fields[$fields[$i]]];
+                    }
                     $inputData[$record][$pii_events[$fields[$i]]][$pii_fields[$fields[$i]]] = '';
                     $nSaveCount++;
                 }  
@@ -172,6 +177,10 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
             {
                 if($pii_events[$i] != '' && $pii_fields[$i] != '' && $data[$record][$pii_events[$i]][$pii_fields[$i]] != '')
                 {
+                    if($field_info[$pii_fields[$i]]['field_type'] == 'file')
+                    {
+                        $docIds[] = $data[$record][$pii_events[$i]][$pii_fields[$i]];
+                    }  
                     $inputData[$record][$pii_events[$i]][$pii_fields[$i]] = '';
                     $nSaveCount++;
                 }
@@ -180,11 +189,27 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
 
         if($nSaveCount > 0)
         {
-             //clear PII fields and log 
-            $saveData = \REDCap::saveData($project_id, 'array', $inputData, 'overwrite', 'YMD', 'flat', null, true );
+            //clear PII fields and log 
+            $params = array('project_id'=>$project_id, 'dataFormat'=>'array', 'data'=>$inputData, 'overwriteBehavior'=>'overwrite','type'=>'flat', 'skipFileUploadFields'=>false);
+	    $saveData = \REDCap::saveData($params);
             if($saveData['item_count'] ===  $nSaveCount)
             {
-                \REDCap::logEvent('Clear PII', "Clearing fields ".$type, "Clearing fields ".$type, $record, "", $project_id);
+                // delete any files if file upload or signature fields.
+                $file_info = "";
+                if($docIds !== null)
+                {
+                    for ( $i = 0; $i < count($docIds); $i++ )
+                    {
+                        if(\Files::deleteFileByDocId($docIds[$i], $project_id) == false)
+                        {
+                            $file_info .= "\nFailed to delete file(Doc Id=".$docIds[$i].")";
+                        }
+                        else {
+                            $file_info .= "\nRemoved file (Doc Id=".$docIds[$i].")";
+                        }
+                    }
+                }
+                \REDCap::logEvent('Clear PII', "Clearing fields ".$type.$file_info, "Clearing fields ".$type, $record, "", $project_id);
                 return true;
             }
             else
