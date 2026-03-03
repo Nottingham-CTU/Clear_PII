@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class Test03ManualClearPIIUseraccess():
+class Test04ProuctionLogicSave():
   def setup_method(self, method):
     self.driver = webdriver.Chrome()
     self.vars = {}
@@ -18,7 +18,7 @@ class Test03ManualClearPIIUseraccess():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_03ManualClearPIIUseraccess(self):
+  def test_04ProuctionLogicSave(self):
     self.driver.get("http://127.0.0.1/")
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     self.driver.find_element(By.LINK_TEXT, "Log out").click()
