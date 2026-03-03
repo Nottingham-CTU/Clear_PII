@@ -258,7 +258,7 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
             $logic = \Piping::pipeSpecialTags($logic, PROJECT_ID, null, null, null, USERID, true, null, null, false, false, false, true);
 
             // Obtain array of error fields that are not real fields
-            $error_fields = \Design::validateBranchingCalc($logic);
+            $error_fields = \Design::validateBranchingCalc($logic, true);
 
 	
             // Return list of fields that do not exist (i.e. were entered incorrectly), else continue.
