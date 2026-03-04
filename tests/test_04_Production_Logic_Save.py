@@ -30,6 +30,7 @@ class Test04ProuctionLogicSave():
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
+    time.sleep(5)
     self.driver.find_element(By.CSS_SELECTOR, "a[href*=\"ProjectSetup/index.php\"]").click()
     self.driver.find_element(By.CSS_SELECTOR, "button[onclick*=\"MoveToProd()\"]").click()
     self.driver.execute_script("$(\'#south\').remove()")
