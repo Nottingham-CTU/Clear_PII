@@ -223,6 +223,10 @@ class ClearPII extends \ExternalModules\AbstractExternalModule {
 
     function validateSettings($settings) 
     {
+        if ($this->getProjectID() === null)
+        {
+                return null;
+        }
         $errMsg = "";
         
         for ( $i = 0; $i < count( $settings['pi-vars'] ); $i++ )
