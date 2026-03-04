@@ -42,6 +42,7 @@ class Test04ProuctionLogicSave():
     self.driver.find_element(By.CSS_SELECTOR, "tr[data-module=\"clear_pii\"] .external-modules-configure-button").click()
     time.sleep(5)
     self.driver.find_element(By.CSS_SELECTOR, ".modal-lg .save").click()
+    time.sleep(5)
     self.driver.find_element(By.LINK_TEXT, "Logging").click()
     time.sleep(1)
     print("ECHOSCREENSHOT")
