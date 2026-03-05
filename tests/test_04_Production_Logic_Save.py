@@ -31,9 +31,8 @@ class Test04ProuctionLogicSave():
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
     time.sleep(5)
+    self.driver.execute_script("window.scrollTo(0,306)")
     print("ECHOSCREENSHOT")
-    self.driver.find_element(By.CSS_SELECTOR, "a[href*=\"ProjectSetup/index.php\"]").click()
-    time.sleep(5)
     self.driver.find_element(By.CSS_SELECTOR, "button[onclick*=\"MoveToProd()\"]").click()
     self.driver.execute_script("$(\'#south\').remove()")
     self.driver.find_element(By.ID, "keep_data").click()
