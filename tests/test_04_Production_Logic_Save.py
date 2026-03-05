@@ -25,6 +25,7 @@ class Test04ProuctionLogicSave():
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "footer")))
     self.driver.execute_script("$(\'#username\').val(\'admin\');$(\'#password\').val(\'abc123\')")
     self.driver.find_element(By.ID, "login_btn").click()
+    print("ECHOSCREENSHOT")
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "a[href*=\"index.php?action=myprojects\"]")))
     self.driver.find_element(By.LINK_TEXT, "My Projects").click()
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
