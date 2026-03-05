@@ -63,6 +63,7 @@ class Test03ManualClearPIIUseraccess():
     self.driver.find_element(By.ID, "user_role").click()
     dropdown = self.driver.find_element(By.ID, "user_role")
     dropdown.find_element(By.XPATH, "//option[. = 'Administrator']").click()
+    time.sleep(3)
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     time.sleep(1)
     self.driver.execute_script("location.reload()")

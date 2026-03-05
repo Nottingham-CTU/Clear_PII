@@ -37,6 +37,7 @@ class Test04ProuctionLogicSave():
     self.driver.find_element(By.ID, "keep_data").click()
     self.driver.find_element(By.XPATH, "//button[contains(.,\'Move to Production\')]").click()
     WebDriverWait(self.driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "south")))
+    print("ECHOSCREENSHOT")
     self.driver.find_element(By.LINK_TEXT, "Manage").click()
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, "tr[data-module=\"clear_pii\"] .external-modules-configure-button").click()
