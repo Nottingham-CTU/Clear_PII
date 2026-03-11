@@ -30,7 +30,7 @@ class Test03ManualClearPIIUseraccess():
     elements = self.driver.find_elements(By.XPATH, "//*[@id=\"table-proj_table\"][contains(.,\'Clear PII Test\')]")
     assert len(elements) > 0
     self.driver.find_element(By.LINK_TEXT, "Clear PII Test").click()
-    time.sleep(3)
+    time.sleep(5)
     self.driver.find_element(By.LINK_TEXT, "Clear PIIs").click()
     time.sleep(3)
     self.driver.find_element(By.LINK_TEXT, "User Rights").click()
@@ -63,6 +63,7 @@ class Test03ManualClearPIIUseraccess():
     self.driver.find_element(By.ID, "user_role").click()
     dropdown = self.driver.find_element(By.ID, "user_role")
     dropdown.find_element(By.XPATH, "//option[. = 'Administrator']").click()
+    time.sleep(3)
     self.driver.find_element(By.ID, "assignDagRoleBtn").click()
     time.sleep(1)
     self.driver.execute_script("location.reload()")
