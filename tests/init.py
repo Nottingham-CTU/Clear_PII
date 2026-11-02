@@ -30,7 +30,7 @@ class TestInit():
     self.driver.find_element(By.NAME, "odm").send_keys("REPODIR/tests/ClearPIITest_REDCap.xml")
     time.sleep(1)
     self.driver.find_element(By.CSS_SELECTOR, ".btn-primaryrc").click()
-    self.driver.find_element(By.LINK_TEXT, "Manage").click()
+    self.driver.find_element(By.CSS_SELECTOR, "a[href*=\"ExternalModules/manager/project.php\"]").click()
     time.sleep(1)
     self.driver.find_element(By.ID, "external-modules-enable-modules-button").click()
     element = self.driver.find_element(By.ID, "external-modules-enable-modules-button")
